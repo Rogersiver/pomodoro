@@ -8,7 +8,7 @@ function Home() {
   return (
     <React.Fragment>
       <Head>
-        <title>Pomodoro</title>
+        <title>Pomodoro 🍅 </title>
       </Head>
       <div
         style={{
@@ -19,7 +19,6 @@ function Home() {
           alignItems: 'center',
         }}
       >
-        <Title />
         <CountDown />
       </div>
     </React.Fragment>

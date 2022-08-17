@@ -14,7 +14,25 @@ const CountDown = () => {
 
   const [inputMinutes, setInputMinutes] = useState(0);
   const [inputSeconds, setInputSeconds] = useState(0);
+  const [isWorkTimer, setIsWorkTimer] = useState(true);
+  const [isBreakTimer, setIsBreakTimer] = useState(false);
   const [max, setMax] = useState(120);
+
+  const Checkbox = ({ label, value, onChange }) => {
+    return (
+      <label
+        style={{
+          backgroundColor: value ? 'rgb(239 68 68)' : 'rgb(24 24 27)',
+          padding: '1vh',
+          borderRadius: '10%',
+          margin: 'auto',
+          fontSize: '1.2rem',
+        }}
+      >
+        <div onClick={onChange}>{label}</div>
+      </label>
+    );
+  };
 
   const remaining = max - value;
   const remainingMin = Math.floor(remaining / 60);
@@ -44,9 +62,14 @@ const CountDown = () => {
       console.log(`its not a number`);
     }
     if (value === max && running === true) {
-      let notif = new Notification('Work Done!', {
-        body: 'Take a Break!!',
-      });
+      let notif;
+      isWorkTimer
+        ? (notif = new Notification('Work Done!', {
+            body: 'Take a Break!!',
+          }))
+        : (notif = new Notification('Break Done!', {
+            body: 'Get to Work!!',
+          }));
       setRunning(false);
       clearInterval(interval);
       setTimeout(() => {
@@ -60,17 +83,19 @@ const CountDown = () => {
   return (
     <div
       style={{
-        flex: 1,
-        flexDirection: 'column',
-        alignContent: 'center',
-        alignItems: 'center',
         position: 'absolute',
-        top: '50%',
+        top: '40%',
         left: '50%',
         transform: 'translate(-50%,-50%)',
       }}
     >
-      <div style={{ width: 'full', height: '50vh' }}>
+      <div
+        style={{
+          marginTop: '10vh',
+          width: 'full',
+          height: '50vh',
+        }}
+      >
         <div
           style={{
             width: '300px',
@@ -105,8 +130,35 @@ const CountDown = () => {
           />
         </div>
       </div>
-
-      <div style={{ height: '20vh', width: '300px' }}>
+      <div className='flex'>
+        <Checkbox
+          label='Work'
+          value={isWorkTimer}
+          onChange={() => {
+            if (isWorkTimer && !isBreakTimer) {
+              return;
+            }
+            setIsWorkTimer((isWorkTimer) => !isWorkTimer);
+            if (isBreakTimer) {
+              setIsBreakTimer(false);
+            }
+          }}
+        />
+        <Checkbox
+          label='Break'
+          value={isBreakTimer}
+          onChange={() => {
+            if (isBreakTimer && !isWorkTimer) {
+              return;
+            }
+            setIsBreakTimer((isBreakTimer) => !isBreakTimer);
+            if (isWorkTimer) {
+              setIsWorkTimer(false);
+            }
+          }}
+        />
+      </div>
+      <div style={{ height: '24vh', width: '300px', margin: 'auto' }}>
         <div style={{ height: '20vh', margin: 'auto' }}>
           {running ? (
             <button
@@ -136,8 +188,8 @@ const CountDown = () => {
             Reset
           </button>
         </div>
-        <div className='mt-4 w-full'>
-          {!running && (
+        {!running && (
+          <div className='mt-4 w-full'>
             <div className='flex w-full'>
               <div className='w-full text-center'>
                 <p>Minutes</p>
@@ -176,8 +228,8 @@ const CountDown = () => {
                 ></input>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

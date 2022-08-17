@@ -5,14 +5,14 @@ import { createWindow } from './helpers';
 import path from 'path';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
-console.log(path.join(__dirname, '../resources/IconTemplate@2x.png'));
 const windowOpts = {
-  width: 660,
-  height: 360,
-  minHeight: 650,
-  minWidth: 350,
-  maxWidth: 700,
-  maxHeight: 700,
+  minWidth: 340,
+  minHeight: 550,
+  width: 350,
+  height: 550,
+  maxWidth: 400,
+  maxHeight: 600,
+  fullscreen: false,
   resizable: true,
 };
 
