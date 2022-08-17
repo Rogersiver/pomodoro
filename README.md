@@ -1,4 +1,8 @@
-<p align="center"><img src="https://i.imgur.com/PpoDlNW.png"></p>
+# Pomodoro
+
+## A simple tomato timer for my own focus
+
+<p align="center"><img src="https://i.imgur.com/n7DFCZB.gif"></p>
 
 ## Usage
 
