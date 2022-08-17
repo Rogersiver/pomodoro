@@ -2,6 +2,8 @@
 
 ## Usage
 
+> A simple tomato timer application with a notification to tell you when to take a break!
+
 ### Install Dependencies
 
 ```bash
