@@ -16,18 +16,35 @@ const CountDown = () => {
   const [inputSeconds, setInputSeconds] = useState(0);
   const [isWorkTimer, setIsWorkTimer] = useState(true);
   const [isBreakTimer, setIsBreakTimer] = useState(false);
-  const [max, setMax] = useState(120);
+  const [max, setMax] = useState(900);
 
   const Checkbox = ({ label, value, onChange }) => {
     return (
       <label
         style={{
-          backgroundColor: value ? 'rgb(239 68 68)' : 'rgb(24 24 27)',
+          // backgroundColor:
+          //   label === 'Work'
+          //     ? value
+          //       ? 'rgb(239 68 68)'
+          //       : 'rgb(39 39 42)'
+          //     : value
+          //     ? 'rgb(20 100 20)'
+          //     : 'rgb(39 39 42)',
           padding: '1vh',
           borderRadius: '10%',
           margin: 'auto',
+          marginTop: '10px',
           fontSize: '1.2rem',
         }}
+        className={`${
+          label === 'Work'
+            ? isWorkTimer
+              ? 'bg-red-500'
+              : 'bg-zinc-800  hover:bg-red-900'
+            : isWorkTimer
+            ? 'bg-zinc-800  hover:bg-green-900'
+            : 'bg-green-500'
+        } rounded-lg`}
       >
         <div onClick={onChange}>{label}</div>
       </label>
@@ -63,13 +80,19 @@ const CountDown = () => {
     }
     if (value === max && running === true) {
       let notif;
-      isWorkTimer
-        ? (notif = new Notification('Work Done!', {
-            body: 'Take a Break!!',
-          }))
-        : (notif = new Notification('Break Done!', {
-            body: 'Get to Work!!',
-          }));
+      if (isWorkTimer) {
+        notif = new Notification('Work Done!', {
+          body: 'Take a Break!!',
+        });
+        setIsWorkTimer(false);
+        setIsBreakTimer(true);
+      } else {
+        notif = new Notification('Break Done!', {
+          body: 'Get to Work!!',
+        });
+        setIsWorkTimer(true);
+        setIsBreakTimer(false);
+      }
       setRunning(false);
       clearInterval(interval);
       setTimeout(() => {
@@ -109,22 +132,12 @@ const CountDown = () => {
               max / 60
             )}:${pad(max - Math.floor(max / 60) * 60)}`}
             styles={buildStyles({
-              // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-              strokeLinecap: 'round',
-
-              // Text size
+              strokeLinecap: 'butt',
               textSize: '12px',
-
-              // How long animation takes to go from one percentage to another, in seconds
               pathTransitionDuration: 0.5,
-
-              // Can specify path transition in more detail, or remove it entirely
-              // pathTransition: 'none',
-
-              // Colors
-              pathColor: `rgb(239 68 68)`,
-              textColor: '#f88',
-              trailColor: '#d6d6d6',
+              pathColor: isWorkTimer ? `rgb(239 68 68)` : `rgb(20 100 20)`,
+              textColor: isWorkTimer ? '#f88' : `rgb(150 200 150)`,
+              trailColor: isWorkTimer ? '#d6d6d6' : `rgb(180 200 180)`,
               backgroundColor: '#f88',
             })}
           />
@@ -162,7 +175,9 @@ const CountDown = () => {
         <div style={{ height: '20vh', margin: 'auto' }}>
           {running ? (
             <button
-              className='bg-transparent w-full mt-4 hover:bg-red-500 text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded'
+              className={`bg-zinc-800 w-full mt-4 ${
+                isWorkTimer ? 'hover:bg-red-500' : 'hover:bg-green-500'
+              } text-blue-dark font-semibold rounded-lg  hover:text-white py-2 px-4`}
               onClick={() => {
                 setRunning(false);
               }}
@@ -171,7 +186,9 @@ const CountDown = () => {
             </button>
           ) : (
             <button
-              className='bg-transparent w-full mt-4 hover:bg-red-500 text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded'
+              className={`bg-zinc-800 w-full mt-4 ${
+                isWorkTimer ? 'hover:bg-red-500' : 'hover:bg-green-500'
+              } text-blue-dark font-semibold rounded-lg  hover:text-white py-2 px-4`}
               onClick={() => {
                 setRunning(true);
               }}
@@ -183,15 +200,17 @@ const CountDown = () => {
             onClick={() => {
               running ? setValue(1) : setValue(0);
             }}
-            className='bg-transparent w-full mt-4 hover:bg-red-500 text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded'
+            className={`bg-zinc-800 t w-full mt-4 ${
+              isWorkTimer ? 'hover:bg-red-500' : 'hover:bg-green-500'
+            } text-blue-dark font-semibold rounded-lg  hover:text-white py-2 px-4`}
           >
             Reset
           </button>
         </div>
-        {!running && (
+        {!running ? (
           <div className='mt-4 w-full'>
-            <div className='flex w-full'>
-              <div className='w-full text-center'>
+            <div className='flex'>
+              <div className='w-full mx-2 text-center'>
                 <p>Minutes</p>
                 <input
                   value={inputMinutes}
@@ -206,14 +225,14 @@ const CountDown = () => {
                     setInputMinutes(Number(e.target.value));
                   }}
                   placeholder='Min'
-                  className=' bg-zinc-900 w-full text-center p-1 border rounded'
+                  className='rounded-lg  bg-zinc-800 hover:bg-zinc-700 focus:bg-zinc-600 w-full text-center p-1 rounded'
                 ></input>
               </div>
-              <div className='w-full text-center'>
+              <div className='w-full mx-2 text-center'>
                 <p>Seconds</p>
                 <input
                   placeholder='Sec'
-                  className=' bg-zinc-900 w-full text-center p-1 border rounded'
+                  className='rounded-lg  bg-zinc-800 hover:bg-zinc-700 focus:bg-zinc-600 w-full text-center p-1 rounded'
                   value={inputSeconds}
                   onChange={(e) => {
                     if (isNaN(Number(e.target.value))) {
@@ -228,6 +247,33 @@ const CountDown = () => {
                 ></input>
               </div>
             </div>
+          </div>
+        ) : (
+          <div>
+            {
+              <div className='flex mt-2'>
+                <button
+                  onClick={() => {
+                    setValue((value) => value - 60);
+                  }}
+                  className={`bg-zinc-800 w-full mr-2 ${
+                    isWorkTimer ? 'hover:bg-red-500' : 'hover:bg-green-500'
+                  } text-blue-dark font-semibold rounded-lg  hover:text-white py-4 px-4`}
+                >
+                  +1 Min
+                </button>
+                <button
+                  onClick={() => {
+                    setValue((value) => value + 60);
+                  }}
+                  className={`bg-zinc-800 w-full ml-2 ${
+                    isWorkTimer ? 'hover:bg-red-500' : 'hover:bg-green-500'
+                  } text-blue-dark font-semibold rounded-lg  hover:text-white py-4 px-4`}
+                >
+                  -1 Min
+                </button>
+              </div>
+            }
           </div>
         )}
       </div>

@@ -6,14 +6,11 @@ import path from 'path';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
 const windowOpts = {
-  minWidth: 340,
-  minHeight: 550,
   width: 350,
   height: 550,
-  maxWidth: 400,
-  maxHeight: 600,
+  frame: false,
   fullscreen: false,
-  resizable: true,
+  resizable: false,
 };
 
 if (isProd) {
