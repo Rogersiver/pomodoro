@@ -8,7 +8,7 @@ const pad = (n) => {
   return n < 10 ? '0' + n : n;
 };
 
-const AnimatedCricle = () => {
+const CountDown = () => {
   const [running, setRunning] = useState(false);
   const [value, setValue] = useState(0);
 
@@ -62,7 +62,7 @@ const AnimatedCricle = () => {
         alignContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        top: '60%',
+        top: '50%',
         left: '50%',
         transform: 'translate(-50%,-50%)',
       }}
@@ -77,7 +77,9 @@ const AnimatedCricle = () => {
         >
           <CircularProgressbar
             value={percentage}
-            text={`${remainingMin}:${pad(remainingSec)}`}
+            text={`${remainingMin}:${pad(remainingSec)}/${Math.floor(
+              max / 60
+            )}:${pad(max - Math.floor(max / 60) * 60)}`}
             styles={buildStyles({
               // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
               strokeLinecap: 'round',
@@ -101,35 +103,36 @@ const AnimatedCricle = () => {
         </div>
       </div>
 
-      <div style={{ height: '50vh', width: '300px' }} className='flex-col'>
-        {running ? (
+      <div style={{ height: '20vh', width: '300px' }}>
+        <div style={{ height: '20vh', margin: 'auto' }}>
+          {running ? (
+            <button
+              className='bg-transparent w-full mt-4 hover:bg-red-500 text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded'
+              onClick={() => {
+                setRunning(false);
+              }}
+            >
+              Stop
+            </button>
+          ) : (
+            <button
+              className='bg-transparent w-full mt-4 hover:bg-red-500 text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded'
+              onClick={() => {
+                setRunning(true);
+              }}
+            >
+              Run
+            </button>
+          )}
           <button
-            className='bg-transparent w-full mt-4 hover:bg-red-500 text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded'
             onClick={() => {
-              setRunning(false);
+              running ? setValue(1) : setValue(0);
             }}
-          >
-            Stop
-          </button>
-        ) : (
-          <button
             className='bg-transparent w-full mt-4 hover:bg-red-500 text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded'
-            onClick={() => {
-              setRunning(true);
-            }}
           >
-            Run
+            Reset
           </button>
-        )}
-        <button
-          onClick={() => {
-            running ? setValue(1) : setValue(0);
-          }}
-          className='bg-transparent w-full mt-4 hover:bg-red-500 text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded'
-        >
-          Reset
-        </button>
-
+        </div>
         <div className='mt-4 w-full'>
           {!running && (
             <div className='flex w-full'>
@@ -140,6 +143,10 @@ const AnimatedCricle = () => {
                   onChange={(e) => {
                     if (isNaN(Number(e.target.value))) {
                       return setInputMinutes(0);
+                    } else if (e.target.value.toString().length > 2) {
+                      return;
+                    } else if (Number(e.target.value) > 60) {
+                      return setInputMinutes(60);
                     }
                     setInputMinutes(Number(e.target.value));
                   }}
@@ -156,6 +163,10 @@ const AnimatedCricle = () => {
                   onChange={(e) => {
                     if (isNaN(Number(e.target.value))) {
                       return setInputSeconds(0);
+                    } else if (e.target.value.toString().length > 2) {
+                      return;
+                    } else if (Number(e.target.value) > 60) {
+                      return setInputSeconds(60);
                     }
                     setInputSeconds(Number(e.target.value));
                   }}
@@ -169,4 +180,4 @@ const AnimatedCricle = () => {
   );
 };
 
-export default AnimatedCricle;
+export default CountDown;

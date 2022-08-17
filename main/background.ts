@@ -18,7 +18,7 @@ if (isProd) {
     minHeight: 650,
     minWidth: 350,
     maxWidth: 700,
-    maxHeight: 650,
+    maxHeight: 700,
     resizable: true,
   });
 

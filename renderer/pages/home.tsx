@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Title from '../components/Title';
-import AnimatedCricle from '../components/AnimatedCricle';
+import CountDown from '../components/CountDown';
 
 function Home() {
   return (
@@ -13,13 +13,14 @@ function Home() {
       <div
         style={{
           display: 'flex',
+          overflowY: 'hidden',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
         <Title />
-        <AnimatedCricle />
+        <CountDown />
       </div>
     </React.Fragment>
   );
