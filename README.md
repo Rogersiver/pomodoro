@@ -1,23 +1,10 @@
-<p align="center"><img src="https://i.imgur.com/a9QWW0v.png"></p>
+<p align="center"><img src="https://i.imgur.com/PpoDlNW.png"></p>
 
 ## Usage
 
-### Create an App
-
-```
-# with npx
-$ npx create-nextron-app my-app --example with-typescript-tailwindcss
-
-# with yarn
-$ yarn create nextron-app my-app --example with-typescript-tailwindcss
-
-# with pnpx
-$ pnpx create-nextron-app my-app --example with-typescript-tailwindcss
-```
-
 ### Install Dependencies
 
-```
+```bash
 $ cd my-app
 
 # using yarn or npm
@@ -29,7 +16,7 @@ $ pnpm install --shamefully-hoist
 
 ### Use it
 
-```
+```bash
 # development mode
 $ yarn dev (or `npm run dev` or `pnpm run dev`)
 
