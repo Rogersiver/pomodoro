@@ -37,6 +37,9 @@ const CountDown = () => {
   }, [inputMinutes, inputSeconds]);
 
   useEffect(() => {
+    if (remaining < 0) {
+      setValue(0);
+    }
     if (isNaN(value)) {
       console.log(`its not a number`);
     }
