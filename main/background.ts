@@ -7,8 +7,8 @@ import path from 'path';
 const isProd: boolean = process.env.NODE_ENV === 'production';
 console.log(path.join(__dirname, '../resources/IconTemplate@2x.png'));
 const windowOpts = {
-  width: 700,
-  height: 700,
+  width: 660,
+  height: 360,
   minHeight: 650,
   minWidth: 350,
   maxWidth: 700,
