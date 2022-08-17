@@ -2,9 +2,10 @@ import { app } from 'electron';
 import TrayGenerator from './helpers/TrayGenerator';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
+import path from 'path';
 
 const isProd: boolean = process.env.NODE_ENV === 'production';
-
+console.log(path.join(__dirname, '../resources/IconTemplate@2x.png'));
 const windowOpts = {
   width: 700,
   height: 700,
@@ -29,13 +30,18 @@ if (isProd) {
 
   if (isProd) {
     await mainWindow.loadURL('app://./home.html');
+    const trayGenerator: TrayGenerator = new TrayGenerator(
+      mainWindow,
+      '/Users/rogersiver/Workspace/pomodoro/resources/IconTemplate@2x.png'
+    );
+    tray = trayGenerator.tray;
   } else {
     const port = process.argv[2];
     await mainWindow.loadURL(`http://localhost:${port}/home`);
     mainWindow.webContents.openDevTools();
     const trayGenerator: TrayGenerator = new TrayGenerator(
       mainWindow,
-      '/Users/rogersiver/Workspace/pomodoro/main/IconTemplate.png'
+      path.join(__dirname, '../resources/IconTemplate@2x.png')
     );
     tray = trayGenerator.tray;
   }
